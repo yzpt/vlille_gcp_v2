@@ -3,3 +3,4 @@ key*
 z_*
 
 *.zip
+__pycache__
