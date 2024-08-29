@@ -85,3 +85,11 @@ pip install requests google-cloud-bigquery google-cloud-storage pytz google-clou
 pip install ipykernel pandas db-dtypes
 
 
+
+
+## Dash Leaflet
+pip install dash dash-leaflet dash-extensions dash-bootstrap-components
+
+# upgrade ip pandas
+pip install --upgrade pandas
+

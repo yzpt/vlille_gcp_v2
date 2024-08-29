@@ -10,7 +10,7 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = Config.GOOGLE_CREDENTIALS
 
 class TimeService:
     @staticmethod
-    def get_current_time_in_timezone(timezone: str):
+    def get_current_time_in_timezone(timezone: str) -> datetime:
         tz = pytz.timezone(timezone)
         return datetime.now(tz)
 
@@ -18,7 +18,7 @@ class APIService:
     def __init__(self, url: str):
         self.url = url
 
-    def fetch_data(self):
+    def fetch_data(self) -> dict:
         response = requests.get(self.url)
         response.raise_for_status()
         return response.json()
@@ -29,7 +29,7 @@ class VLilleETL:
         self.bigquery_service   = BigQueryService(config.PROJECT_NAME, config.DATASET_ID, config.TABLE_ID)
         self.timezone           = config.TIMEZONE
 
-    def execute(self):
+    def execute(self) -> None:
         current_time            = TimeService.get_current_time_in_timezone(self.timezone)
         timestamp               = current_time.strftime('%Y-%m-%d %H:%M:%S')
         
@@ -47,7 +47,7 @@ class VLilleETL:
             print(f"Error inserting data into BigQuery: {e}")
             return
 
-def vlille_pubsub(event, context):
+def vlille_pubsub(event, context) -> None:
     etl = VLilleETL(Config)
     etl.execute()
 

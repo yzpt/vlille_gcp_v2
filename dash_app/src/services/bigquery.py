@@ -23,3 +23,8 @@ class BigQueryService:
             }
             data_to_insert.append(row)
         self.client.insert_rows(table, data_to_insert)
+        
+    def query_data(self, query: str) -> list:
+        query_job = self.client.query(query)
+        return query_job.result()
+    
