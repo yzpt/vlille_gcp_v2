@@ -26,7 +26,7 @@ class APIService:
 class VLilleETL:
     def __init__(self, config: Config):
         self.api_service        = APIService(config.API_URL)
-        self.bigquery_service   = BigQueryService(config.PROJECT_NAME, config.DATASET_ID, config.TABLE_ID)
+        self.bigquery_service   = BigQueryService(config.PROJECT_ID, config.DATASET_ID, config.RECORDS_TABLE_ID)
         self.timezone           = config.TIMEZONE
 
     def execute(self) -> None:

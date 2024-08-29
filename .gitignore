@@ -4,3 +4,7 @@ z_*
 
 *.zip
 __pycache__
+
+# Ignore environment variable files
+.env
+.env.*
