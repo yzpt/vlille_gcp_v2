@@ -21,7 +21,9 @@ gcloud config set project $PROJECT_ID
 gcloud iam service-accounts create $SERVICE_ACCOUNT_NAME --display-name "$PROJECT_ID service-account"
 
 # Granting the least permissions (dataEditor) to the service account
-gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SERVICE_ACCOUNT" --role="roles/bigquery.dataEditor"
+# gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SERVICE_ACCOUNT" --role="roles/bigquery.dataEditor"
+# need the 'user' role to create jobs from bigquery client:
+gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SERVICE_ACCOUNT" --role="roles/bigquery.user"
 
 # Granting the least permissions (storage.objectAdmin) to the service account
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SERVICE_ACCOUNT" --role="roles/storage.objectAdmin"
@@ -44,5 +46,3 @@ gcloud services enable cloudfunctions.googleapis.com
 gcloud services enable pubsub.googleapis.com
 gcloud services enable cloudscheduler.googleapis.com
 
-# Creating a BigQuery dataset
-bq mk $PROJECT_ID:$DATASET_ID
