@@ -7,8 +7,11 @@ SERVICE_ACCOUNT=$SERVICE_ACCOUNT_NAME@$PROJECT_ID.iam.gserviceaccount.com
 BILLING_ACCOUNT=$(cat key-billing-account.txt)
 BUCKET_NAME=gs://$PROJECT_ID-function
 REGION_FUNCTION=europe-west9
-PUBSUB_TOPIC=cloud-function-trigger-vlille
 DATASET_ID=vlille_dataset
+PUBSUB_TOPIC=cloud-function-trigger-vlille
+SCHEDULER_NAME=vlille-minute
+SCHEDULER_LOCATION=europe-west1
+TIMEZONE=Europe/Paris
 
 
 # Creating a new gcloud project
@@ -45,4 +48,21 @@ gcloud services enable run.googleapis.com
 gcloud services enable cloudfunctions.googleapis.com
 gcloud services enable pubsub.googleapis.com
 gcloud services enable cloudscheduler.googleapis.com
+gcloud services enable eventarc.googleapis.com
+
+
+# Creating a Pub/Sub topic: cloud-function-trigger-vlille
+gcloud pubsub topics create $PUBSUB_TOPIC
+
+# Creating a job scheduler that sends a message to the Pub/Sub topic every minute
+gcloud scheduler jobs create pubsub $SCHEDULER_NAME --schedule="* * * * *" --topic=$PUBSUB_TOPIC --message-body="{Message from the $SCHEDULER_NAME Pub/Sub scheduler}" --time-zone=$TIMEZONE --location=$SCHEDULER_LOCATION --description="Scheduler every minute"
+
+# function deploy
+gsutil ls
+# zip function's folder
+cd function && zip -r ../function.zip . && cd ..
+# upload function
+gsutil cp function.zip $BUCKET_NAME
+# deploy function
+gcloud functions deploy vlille_api_extraction_v2 --runtime python310 --region $REGION_FUNCTION --trigger-topic $PUBSUB_TOPIC --source $BUCKET_NAME/function.zip --entry-point vlille_pubsub --gen2
 
