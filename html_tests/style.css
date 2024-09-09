@@ -1,0 +1,34 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+.left-column {
+    width: 25%;
+    background-color: #ff7d7d;
+    box-sizing: border-box;
+}
+
+.right-column {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.map {
+    background-color: #4ec93e;
+    height: 40%;
+}
+
+.info {
+    background-color: #6db1ff;
+    height: 60%;
+}
